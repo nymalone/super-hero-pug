@@ -1,15 +1,18 @@
 //_____________________________________GAME AREA_________________________________________________________________________//
 
-var bg = new Image();
+let bg = new Image();
 bg.src = "https://img.itch.zone/aW1hZ2UvMjI0NzUzLzEwNjE2NDYucG5n/original/rjUbXS.png";
 
-var myObstacles = [];
-var myFoods = [];
+let myObstacles = [];
+let myFoods = [];
 let life = 3;
+let points = 0;
+let id = 0;
 
-var myGameArea = {
+let myGameArea = {
   canvas: document.createElement("canvas"),
   frames: 0,
+  //id: requestAnimationFrame(updateCanvas), ///// aqui - depois disso ficou mais rapido/////
   start: function () {
     this.canvas.width = window.innerWidth * 0.9;
     this.canvas.height = window.innerHeight * 0.9;
@@ -20,38 +23,28 @@ var myGameArea = {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); //vai limpar a tela a cada 20milisec
   },
   stop: function () {
-    cancelAnimationFrame(this.interval);
+    cancelAnimationFrame(id);  //// aqui ////
   },
   score: function () {
-    var points = Math.floor(this.frames / 50);
     this.ctx.fillStyle = 'black';
     this.ctx.font = '28px sans-serif';
     this.ctx.lineWidth = 1.5,
     this.ctx.textAlign = "center";
     this.ctx.strokeText("SCORE: " + points, this.canvas.width/2, 30);
   },
-  updateLife: function (life) {
+  updateLife: function () {
+    for (let i = 1; i <= life; i += 1) {
     this.ctx.fillStyle = 'black';
     this.ctx.font = '28px sans-serif';
     this.ctx.lineWidth = 1.5,
     this.ctx.textAlign = "center";
-    this.ctx.strokeText("1", this.canvas.width/24, 30);
-    this.ctx.fillStyle = 'black';
-    this.ctx.font = '28px sans-serif';
-    this.ctx.lineWidth = 1.5,
-    this.ctx.textAlign = "center";
-    this.ctx.strokeText("2", this.canvas.width/12, 30);
-    this.ctx.fillStyle = 'black';
-    this.ctx.font = '28px sans-serif';
-    this.ctx.lineWidth = 1.5,
-    this.ctx.textAlign = "center";
-    this.ctx.strokeText("3", this.canvas.width/8, 30);
+    this.ctx.strokeText(i, 0 + i * 60, 30);
+    }
   }
 };
-
 //_____________________________________BACKGROUND_________________________________________________________________________//
 
-var backgroundImage = {
+let backgroundImage = {
   ctx: myGameArea.canvas.getContext("2d"),
   img: bg,
   x: 0,
@@ -82,13 +75,14 @@ function updateCanvas() {
   updateFoods();
   myGameArea.score();
   myGameArea.frames += 1;
+  checkGainPoints();
   myGameArea.updateLife();
+  id = requestAnimationFrame(updateCanvas);
   checkGameOver();
-  requestAnimationFrame(updateCanvas);
 }
 
 // start calling updateCanvas once the image is loaded
-bg.onload = updateCanvas;
+bg.onload = requestAnimationFrame(updateCanvas);
 
 //_____________________________________COMPONENT_________________________________________________________________________//
 
@@ -134,7 +128,7 @@ class Component {
   }
   update() {
     //vai pintar componentes na tela e em diferentes posiçpes
-    var ctx = myGameArea.canvas.getContext("2d");
+    let ctx = myGameArea.canvas.getContext("2d");
     ctx.fillStyle = this.color;
     ctx.fillRect(this.x, this.y, this.width, this.height);
   }
@@ -187,15 +181,15 @@ myGameArea.start();
 //_____________________________________OBSTACLES_________________________________________________________________________//
 
 function updateObstacles() {
-  for (i = 0; i < myObstacles.length; i++) {
+  for (let i = 0; i < myObstacles.length; i++) {
     myObstacles[i].x += -3;
     myObstacles[i].update();
   }
   if (myGameArea.frames % 100 === 0) {
-    var x = myGameArea.canvas.width;
-    var minHeight = 30;
-    var maxHeight = myGameArea.canvas.height - 100;
-    var height = Math.floor(
+    let x = myGameArea.canvas.width;
+    let minHeight = 30;
+    let maxHeight = myGameArea.canvas.height - 100;
+    let height = Math.floor(
       Math.random() * (maxHeight - minHeight + 1) + minHeight
     );
     myObstacles.push(new Component(30, 30, "red", x, height));
@@ -205,15 +199,15 @@ function updateObstacles() {
 //__________________________________________FOODS_________________________________________________________________________//
 
 function updateFoods() {
-  for (i = 0; i < myFoods.length; i++) {
+  for (let i = 0; i < myFoods.length; i++) {
     myFoods[i].x += -2.5;
     myFoods[i].update();
   }
   if (myGameArea.frames % 120 === 0) {
-    var x = myGameArea.canvas.width;
-    var minHeight = 70;
-    var maxHeight = myGameArea.canvas.height - 100;
-    var height = Math.floor(
+    let x = myGameArea.canvas.width;
+    let minHeight = 70;
+    let maxHeight = myGameArea.canvas.height - 100;
+    let height = Math.floor(
       Math.random() * (maxHeight - minHeight + 1) + minHeight
     );
     myFoods.push(new Component(30, 30, "green", x, height));
@@ -222,25 +216,36 @@ function updateFoods() {
 //_________________________________________POINTS_________________________________________________________________________//
 
 function checkGainPoints() {
-  var crashedFood = myFoods.some(function(food) {
+  let crashedFood = myFoods.some(function(food) {
     return player.crashWithFood(food);
   });
   if (crashedFood) {
     points += 10
-    myGameArea.canvas.score();
+    myFoods.forEach((e, idx) => {
+      if(player.crashWithFood(e)) {
+        myFoods.splice(idx, 1);
+      }
+    })
+    myGameArea.score(points);
   } 
+  console.log(points)
 }
 //_____________________________________GAME OVER_________________________________________________________________________//
 
   function checkGameOver(){
-    var crashed = myObstacles.some(function(obstacle) {
+    let crashed = myObstacles.some(function(obstacle) {
       return player.crashWith(obstacle);
     });
     if (crashed && life === 0) {
       myGameArea.stop();
     } else if (crashed && life > 0) {
       life -= 1
+      myObstacles.forEach((e, idx)=> {
+       if(player.crashWith(e)) {
+         myObstacles.splice(idx, 1);
+       }
+      })
       myGameArea.updateLife(life);
     }
     console.log(life)
-  } 
+  }
