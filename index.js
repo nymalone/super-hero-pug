@@ -4,6 +4,8 @@ var bg = new Image();
 bg.src = "https://img.itch.zone/aW1hZ2UvMjI0NzUzLzEwNjE2NDYucG5n/original/rjUbXS.png";
 
 var myObstacles = [];
+var myFoods = [];
+let life = 3;
 
 var myGameArea = {
   canvas: document.createElement("canvas"),
@@ -18,7 +20,7 @@ var myGameArea = {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); //vai limpar a tela a cada 20milisec
   },
   stop: function () {
-    clearInterval(this.interval);
+    cancelAnimationFrame(this.interval);
   },
   score: function () {
     var points = Math.floor(this.frames / 50);
@@ -27,6 +29,23 @@ var myGameArea = {
     this.ctx.lineWidth = 1.5,
     this.ctx.textAlign = "center";
     this.ctx.strokeText("SCORE: " + points, this.canvas.width/2, 30);
+  },
+  updateLife: function (life) {
+    this.ctx.fillStyle = 'black';
+    this.ctx.font = '28px sans-serif';
+    this.ctx.lineWidth = 1.5,
+    this.ctx.textAlign = "center";
+    this.ctx.strokeText("1", this.canvas.width/24, 30);
+    this.ctx.fillStyle = 'black';
+    this.ctx.font = '28px sans-serif';
+    this.ctx.lineWidth = 1.5,
+    this.ctx.textAlign = "center";
+    this.ctx.strokeText("2", this.canvas.width/12, 30);
+    this.ctx.fillStyle = 'black';
+    this.ctx.font = '28px sans-serif';
+    this.ctx.lineWidth = 1.5,
+    this.ctx.textAlign = "center";
+    this.ctx.strokeText("3", this.canvas.width/8, 30);
   }
 };
 
@@ -60,11 +79,14 @@ function updateCanvas() {
   player.newPos();
   player.update();
   updateObstacles();
+  updateFoods();
   myGameArea.score();
   myGameArea.frames += 1;
+  myGameArea.updateLife();
   checkGameOver();
   requestAnimationFrame(updateCanvas);
 }
+
 // start calling updateCanvas once the image is loaded
 bg.onload = updateCanvas;
 
@@ -124,6 +146,14 @@ class Component {
       this.left() > obstacle.right()
     ); 
   }
+  crashWithFood(food) {
+    return !(
+      this.bottom() < food.top() ||
+      this.top() > food.bottom() ||
+      this.right() < food.left() ||
+      this.left() > food.right()
+    ); 
+  }
 }
 
 //________________________________________MOVING_________________________________________________________________________//
@@ -158,34 +188,59 @@ myGameArea.start();
 
 function updateObstacles() {
   for (i = 0; i < myObstacles.length; i++) {
-    myObstacles[i].x += -2;
+    myObstacles[i].x += -3;
     myObstacles[i].update();
   }
-  if (myGameArea.frames % 90 === 0) {
+  if (myGameArea.frames % 100 === 0) {
     var x = myGameArea.canvas.width;
-    var minHeight = 50;
-    var maxHeight = myGameArea.canvas.height - 50;
+    var minHeight = 30;
+    var maxHeight = myGameArea.canvas.height - 100;
     var height = Math.floor(
       Math.random() * (maxHeight - minHeight + 1) + minHeight
     );
-    myObstacles.push(new Component(10, 50, "green", x, height));
+    myObstacles.push(new Component(30, 30, "red", x, height));
   }
 }
 
+//__________________________________________FOODS_________________________________________________________________________//
+
+function updateFoods() {
+  for (i = 0; i < myFoods.length; i++) {
+    myFoods[i].x += -2.5;
+    myFoods[i].update();
+  }
+  if (myGameArea.frames % 120 === 0) {
+    var x = myGameArea.canvas.width;
+    var minHeight = 70;
+    var maxHeight = myGameArea.canvas.height - 100;
+    var height = Math.floor(
+      Math.random() * (maxHeight - minHeight + 1) + minHeight
+    );
+    myFoods.push(new Component(30, 30, "green", x, height));
+  }
+}
+//_________________________________________POINTS_________________________________________________________________________//
+
+function checkGainPoints() {
+  var crashedFood = myFoods.some(function(food) {
+    return player.crashWithFood(food);
+  });
+  if (crashedFood) {
+    points += 10
+    myGameArea.canvas.score();
+  } 
+}
 //_____________________________________GAME OVER_________________________________________________________________________//
 
-function checkGameOver() {
-  var crashed = myObstacles.some(function(obstacle) {
-    return player.crashWith(obstacle);
-  });
-  if (crashed) {
-    myGameArea.canvas.stop();
-  }
-}
-
-//criaar outra function "chackgain point" 
-// criar outro "crash with" pra ganhar pontos se relar 
-//criar array vazia pros pontos ganhos 
-
-//diferenreciar as imagens 
-//criar uma função pra gerar as imagens 
+  function checkGameOver(){
+    var crashed = myObstacles.some(function(obstacle) {
+      return player.crashWith(obstacle);
+    });
+    if (crashed && life === 0) {
+      myGameArea.stop();
+    } else if (crashed && life > 0) {
+      life -= 1
+      myGameArea.updateLife(life);
+    }
+    console.log(life)
+  } 
