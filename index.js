@@ -92,6 +92,7 @@ class Component {
     this.width = width;
     this.height = height;
     this.color = color;
+    this.angle = 0;
     this.x = x;
     this.y = y;
     //speed properties
@@ -155,16 +156,16 @@ class Component {
 document.onkeydown = function (e) {
   switch (e.keyCode) {
     case 38: // up arrow
-      player.speedY -= 3;
+      player.speedY -= 4;
       break;
     case 40: // down arrow
-      player.speedY += 3;
+      player.speedY += 4;
       break;
     case 37: // left arrow
-      player.speedX -= 3;
+      player.speedX -= 4;
       break;
     case 39: // right arrow
-      player.speedX += 3;
+      player.speedX += 4;
       break;
   }
 };
@@ -182,10 +183,24 @@ myGameArea.start();
 
 function updateObstacles() {
   for (let i = 0; i < myObstacles.length; i++) {
+    if (points <= 20) {
     myObstacles[i].x += -3;
+    } else if (points >= 30 && points <= 50) {
+    myObstacles[i].x += -5;
+    } else if (points > 50 && points <= 70) {
+      myObstacles[i].x += -7;
+     } else if (points > 70 && points <= 90) {
+      myObstacles[i].x += -9;
+      } else if (points > 90 && points <= 110) {
+        myObstacles[i].x += -11;
+        } else if (points > 110 && points <= 130) {
+          myObstacles[i].x += -13;
+          } else if (points > 130 && points <= 150) {
+            myObstacles[i].x += -15;
+            }
     myObstacles[i].update();
   }
-  if (myGameArea.frames % 100 === 0) {
+  if (myGameArea.frames % 80 === 0) {
     let x = myGameArea.canvas.width;
     let minHeight = 30;
     let maxHeight = myGameArea.canvas.height - 100;
@@ -193,17 +208,17 @@ function updateObstacles() {
       Math.random() * (maxHeight - minHeight + 1) + minHeight
     );
     myObstacles.push(new Component(30, 30, "red", x, height));
-  }
+  } 
 }
 
 //__________________________________________FOODS_________________________________________________________________________//
 
 function updateFoods() {
   for (let i = 0; i < myFoods.length; i++) {
-    myFoods[i].x += -2.5;
+    myFoods[i].x += -3;
     myFoods[i].update();
   }
-  if (myGameArea.frames % 120 === 0) {
+  if (myGameArea.frames % 100 === 0) {
     let x = myGameArea.canvas.width;
     let minHeight = 70;
     let maxHeight = myGameArea.canvas.height - 100;
@@ -211,7 +226,7 @@ function updateFoods() {
       Math.random() * (maxHeight - minHeight + 1) + minHeight
     );
     myFoods.push(new Component(30, 30, "green", x, height));
-  }
+  } 
 }
 //_________________________________________POINTS_________________________________________________________________________//
 
