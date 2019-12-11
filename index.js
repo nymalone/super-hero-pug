@@ -380,7 +380,7 @@ function updateFoods() {
     let minHeight = 10;
     let maxHeight = myGameArea.canvas.height - 80;
     let height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
-    let num = Math.floor(Math.random() * (10 - 4) + 1);
+    let num = Math.floor(Math.random() * (10 - 4) + 4);
     myFoods.push(new Component(30, 30, num, x, height));
   }
 }
@@ -407,7 +407,7 @@ function checkGameOver() {
   let crashed = myObstacles.some(function (obstacle) {
     return player.crashWith(obstacle);
   });
-  if (crashed && life === 0) {
+  if (crashed && life === 1) {
     myGameArea.stop();
     (myGameArea.ctx.strokeStyle = "black"),
     (myGameArea.ctx.fillStyle = "black"),
