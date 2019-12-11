@@ -32,6 +32,7 @@ let myFoods = [];
 let life = 3;
 let points = 0;
 let id = 0;
+let pause = false;
 
 let myGameArea = {
   canvas: document.createElement("canvas"),
@@ -128,7 +129,7 @@ function updateCanvas() {
   checkGainPoints();
   myGameArea.updateLife();
   id = requestAnimationFrame(updateCanvas);
-  //myMusic.play();
+  myMusic.play();
   checkGameOver();
 }
 myMusic = new sound("bg-sound3.mp3");
@@ -264,6 +265,15 @@ document.onkeydown = function (e) {
       break;
     case 39: // right arrow
       player.speedX += 5;
+      break;
+    case 32: // spacebar
+      pause = !pause
+      if (pause) {
+        myGameArea.stop();
+        myMusic.stop()
+      } else {
+        requestAnimationFrame(updateCanvas);
+      }
       break;
   }
 };
