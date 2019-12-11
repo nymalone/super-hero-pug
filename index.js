@@ -128,7 +128,7 @@ function updateCanvas() {
   checkGainPoints();
   myGameArea.updateLife();
   id = requestAnimationFrame(updateCanvas);
-  //myMusic.play();
+  myMusic.play();
   checkGameOver();
 }
 myMusic = new sound("bg-sound3.mp3");
