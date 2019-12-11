@@ -53,9 +53,9 @@ let myGameArea = {
   score: function () {
     let scoreImage = new Image();
     scoreImage.src = "./images/money.png";
-    this.ctx.drawImage(scoreImage, 1280, 10)
+    this.ctx.drawImage(scoreImage, 1280, 10);
     this.ctx.fillStyle = "green";
-    this.ctx.font = "45px sans-serif",
+    (this.ctx.font = "45px sans-serif"),
     (this.ctx.lineWidth = 1.5),
     (this.ctx.textAlign = "center"),
     this.ctx.fillText(points, 1380, 47);
@@ -191,15 +191,14 @@ class Component {
     let ctx = myGameArea.canvas.getContext("2d");
     if (this.type === "image") {
       ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-    } 
-    else {
-      if (this.num === 1){
+    } else {
+      if (this.num === 1) {
         ctx.drawImage(obs1, this.x, this.y, 45, 45);
       } else if (this.num === 2) {
         ctx.drawImage(obs2, this.x, this.y, 45, 45);
       } else if (this.num === 3) {
         ctx.drawImage(obs3, this.x, this.y, 45, 45);
-      } else if (this.num === 4){
+      } else if (this.num === 4) {
         ctx.drawImage(food1, this.x, this.y, 45, 45);
       } else if (this.num === 5) {
         ctx.drawImage(food2, this.x, this.y, 45, 45);
@@ -221,7 +220,7 @@ class Component {
       this.bottom() < obstacle.top() ||
       this.top() > obstacle.bottom() ||
       this.right() - 40 < obstacle.left() ||
-      this.left() + 40 > obstacle.right() 
+      this.left() + 40 > obstacle.right()
     );
   }
   crashWithFood(food) {
@@ -229,7 +228,7 @@ class Component {
       this.bottom() < food.top() ||
       this.top() > food.bottom() ||
       this.right() - 40 < food.left() ||
-      this.left() + 40 > food.right() 
+      this.left() + 40 > food.right()
     );
   }
 }
@@ -243,12 +242,12 @@ function sound(src) {
   this.sound.setAttribute("controls", "none");
   this.sound.style.display = "none";
   document.body.appendChild(this.sound);
-  this.play = function(){
+  this.play = function () {
     this.sound.play();
-  }
-  this.stop = function(){
+  };
+  this.stop = function () {
     this.sound.pause();
-  }
+  };
 }
 //________________________________________MOVING_________________________________________________________________________//
 
@@ -267,13 +266,18 @@ document.onkeydown = function (e) {
       player.speedX += 5;
       break;
     case 32: // spacebar
-      pause = !pause
+      pause = !pause;
       if (pause) {
         myGameArea.stop();
-        myMusic.stop()
+        myMusic.stop();
       } else {
         requestAnimationFrame(updateCanvas);
       }
+      break;
+    case 13: //enter
+      life = 3;  // fazer um IF pra se a vida for maior que 0 o enter nao funcionar 
+      player.x = 0;
+      requestAnimationFrame(updateCanvas);
       break;
   }
 };
@@ -330,7 +334,9 @@ function updateObstacles() {
     let x = myGameArea.canvas.width;
     let minHeight = 10;
     let maxHeight = myGameArea.canvas.height - 100;
-    let height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
+    let height = Math.floor(
+      Math.random() * (maxHeight - minHeight + 1) + minHeight
+    );
     let num = Math.floor(Math.random() * (3 - 1) + 1);
     myObstacles.push(new Component(30, 30, num, x, height));
   }
@@ -379,7 +385,9 @@ function updateFoods() {
     let x = myGameArea.canvas.width;
     let minHeight = 10;
     let maxHeight = myGameArea.canvas.height - 80;
-    let height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
+    let height = Math.floor(
+      Math.random() * (maxHeight - minHeight + 1) + minHeight
+    );
     let num = Math.floor(Math.random() * (10 - 4) + 4);
     myFoods.push(new Component(30, 30, num, x, height));
   }
@@ -409,16 +417,14 @@ function checkGameOver() {
   });
   if (crashed && life === 1) {
     myGameArea.stop();
-    (myGameArea.ctx.strokeStyle = "black"),
-    (myGameArea.ctx.fillStyle = "black"),
-    (myGameArea.ctx.font = "120px sans-serif"),
-    (myGameArea.ctx.lineWidth = 5),
-    (myGameArea.ctx.textAlign = "center"),
-    myGameArea.ctx.fillText(
-      "GAME OVER",
-      myGameArea.canvas.width / 2,
-      myGameArea.canvas.height / 2
-    );
+    myGameArea.ctx.fillStyle = "black",
+    myGameArea.ctx.font = "47px sans-serif",
+    myGameArea.ctx.textAlign = "center",
+    myGameArea.ctx.fillText("Press ENTER to continue", myGameArea.canvas.width / 2, myGameArea.canvas.height / 2 + 65);
+    myGameArea.ctx.fillStyle = "black",
+    myGameArea.ctx.font = "120px sans-serif",
+    myGameArea.ctx.textAlign = "center",
+    myGameArea.ctx.fillText("GAME OVER", myGameArea.canvas.width / 2, myGameArea.canvas.height / 2)
   } else if (crashed && life > 0) {
     life -= 1;
     myObstacles.forEach((e, idx) => {
