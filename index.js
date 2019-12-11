@@ -2,6 +2,29 @@
 
 let bg = new Image();
 bg.src = "vector-bg.png";
+
+let obs1 = new Image();
+obs1.src = "./images/bomb.png";
+let obs2 = new Image();
+obs2.src = "./images/missile.png";
+let obs3 = new Image();
+obs3.src = "./images/dynamite.png";
+
+let food1 = new Image();
+food1.src = "./images/apple.png";
+let food2 = new Image();
+food2.src = "./images/cake.png";
+let food3 = new Image();
+food3.src = "./images/cookie.png";
+let food4 = new Image();
+food4.src = "./images/cupcake.png";
+let food5 = new Image();
+food5.src = "./images/donut.png";
+let food6 = new Image();
+food6.src = "./images/meat.png";
+let food7 = new Image();
+food7.src = "./images/watermelon.png";
+
 let myObstacles = [];
 let myFoods = [];
 let life = 3;
@@ -27,18 +50,18 @@ let myGameArea = {
   score: function () {
     let scoreImage = new Image();
     scoreImage.src = "./images/money.png";
-    this.ctx.drawImage(scoreImage, 1280, 25)
+    this.ctx.drawImage(scoreImage, 1280, 10)
     this.ctx.fillStyle = "green";
     this.ctx.font = "45px sans-serif",
     (this.ctx.lineWidth = 1.5),
     (this.ctx.textAlign = "center"),
-    this.ctx.fillText(points, 1380, 62);
+    this.ctx.fillText(points, 1380, 47);
   },
   updateLife: function () {
     let lifeImage = new Image();
     lifeImage.src = "./images/valentines.png";
     for (let i = 1; i <= life; i += 1) {
-      this.ctx.drawImage(lifeImage, -15 + i * 60, 25, 45, 45);
+      this.ctx.drawImage(lifeImage, -20 + i * 60, 10, 45, 45);
     }
   }
 };
@@ -48,12 +71,12 @@ let backgroundImage = {
   ctx: myGameArea.canvas.getContext("2d"),
   img: bg,
   x: 0,
-  speed: -2.5,
+  speed: -3,
   move: function () {
     this.x += this.speed;
     this.x %= myGameArea.canvas.width;
-    if (points >= 10) {
-      this.x += this.speed / 2; //ARRUMAR!!
+    if (points >= 100) {
+      this.x += this.speed + 1; //ARRUMAR!!
     }
   },
   draw: function () {
@@ -108,16 +131,17 @@ bg.onload = requestAnimationFrame(updateCanvas);
 //_____________________________________COMPONENT_________________________________________________________________________//
 
 class Component {
-  constructor(width, height, color, x, y, type) {
+  constructor(width, height, num, x, y, type) {
     //parametros que determinam as caracteristicas desse componente
     this.type = type;
     if (type == "image") {
       this.image = new Image();
-      this.image.src = color;
+      this.image.src = num;
+    } else {
+      this.num = num;
     }
     this.width = width;
     this.height = height;
-    this.color = color;
     this.angle = 0;
     this.x = x;
     this.y = y;
@@ -158,25 +182,45 @@ class Component {
     let ctx = myGameArea.canvas.getContext("2d");
     if (this.type === "image") {
       ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-    } else {
-      ctx.fillStyle = this.color;
-      ctx.fillRect(this.x, this.y, this.width, this.height);
+    } 
+    else {
+      if (this.num === 1){
+        ctx.drawImage(obs1, this.x, this.y, 45, 45);
+      } else if (this.num === 2) {
+        ctx.drawImage(obs2, this.x, this.y, 45, 45);
+      } else if (this.num === 3) {
+        ctx.drawImage(obs3, this.x, this.y, 45, 45);
+      } else if (this.num === 4){
+        ctx.drawImage(food1, this.x, this.y, 45, 45);
+      } else if (this.num === 5) {
+        ctx.drawImage(food2, this.x, this.y, 45, 45);
+      } else if (this.num === 6) {
+        ctx.drawImage(food3, this.x, this.y, 45, 45);
+      } else if (this.num === 7) {
+        ctx.drawImage(food4, this.x, this.y, 45, 45);
+      } else if (this.num === 8) {
+        ctx.drawImage(food5, this.x, this.y, 45, 45);
+      } else if (this.num === 9) {
+        ctx.drawImage(food6, this.x, this.y, 45, 45);
+      } else if (this.num === 10) {
+        ctx.drawImage(food7, this.x, this.y, 45, 45);
+      }
     }
   }
   crashWith(obstacle) {
     return !(
-      this.bottom() < obstacle.top() ||
-      this.top() > obstacle.bottom() ||
-      this.right() < obstacle.left() ||
-      this.left() > obstacle.right()
+      this.bottom() < obstacle.top() -25 ||
+      this.top() > obstacle.bottom() -25 ||
+      this.right() < obstacle.left() -25 ||
+      this.left() > obstacle.right() -25
     );
   }
   crashWithFood(food) {
     return !(
-      this.bottom() < food.top() ||
-      this.top() > food.bottom() ||
-      this.right() < food.left() ||
-      this.left() > food.right()
+      this.bottom() < food.top() -25 ||
+      this.top() > food.bottom() -25 ||
+      this.right() < food.left() -25 ||
+      this.left() > food.right() -25
     );
   }
 }
@@ -248,14 +292,13 @@ function updateObstacles() {
     }
     myObstacles[i].update();
   }
-  if (myGameArea.frames % 70 === 0) {
+  if (myGameArea.frames % 100 === 0) {
     let x = myGameArea.canvas.width;
-    let minHeight = 70;
+    let minHeight = 10;
     let maxHeight = myGameArea.canvas.height - 100;
-    let height = Math.floor(
-      Math.random() * (maxHeight - minHeight + 1) + minHeight
-    );
-    myObstacles.push(new Component(30, 30, "red", x, height));
+    let height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
+    let num = Math.floor(Math.random() * (3 - 1) + 1);
+    myObstacles.push(new Component(30, 30, num, x, height));
   }
 }
 
@@ -298,14 +341,13 @@ function updateFoods() {
     }
     myFoods[i].update();
   }
-  if (myGameArea.frames % 90 === 0) {
+  if (myGameArea.frames % 50 === 0) {
     let x = myGameArea.canvas.width;
-    let minHeight = 70;
-    let maxHeight = myGameArea.canvas.height - 100;
-    let height = Math.floor(
-      Math.random() * (maxHeight - minHeight + 1) + minHeight
-    );
-    myFoods.push(new Component(30, 30, "green", x, height));
+    let minHeight = 10;
+    let maxHeight = myGameArea.canvas.height - 80;
+    let height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
+    let num = Math.floor(Math.random() * (10 - 4) + 1);
+    myFoods.push(new Component(30, 30, num, x, height));
   }
 }
 //_________________________________________POINTS_________________________________________________________________________//
