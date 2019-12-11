@@ -3,6 +3,8 @@
 let bg = new Image();
 bg.src = "vector-bg.png";
 
+var myMusic;
+
 let obs1 = new Image();
 obs1.src = "./images/bomb.png";
 let obs2 = new Image();
@@ -77,6 +79,10 @@ let backgroundImage = {
     this.x %= myGameArea.canvas.width;
     if (points >= 100) {
       this.x += this.speed + 1; //ARRUMAR!!
+    } else if (points > 100 && points <= 200) {
+      this.x += this.speed + 1.5;
+    } else if (points > 200 && points <= 400) {
+      this.x += this.speed + 2;
     }
   },
   draw: function () {
@@ -122,8 +128,10 @@ function updateCanvas() {
   checkGainPoints();
   myGameArea.updateLife();
   id = requestAnimationFrame(updateCanvas);
+  //myMusic.play();
   checkGameOver();
 }
+myMusic = new sound("bg-sound3.mp3");
 
 // start calling updateCanvas once the image is loaded
 bg.onload = requestAnimationFrame(updateCanvas);
@@ -209,22 +217,38 @@ class Component {
   }
   crashWith(obstacle) {
     return !(
-      this.bottom() < obstacle.top() -25 ||
-      this.top() > obstacle.bottom() -25 ||
-      this.right() < obstacle.left() -25 ||
-      this.left() > obstacle.right() -25
+      this.bottom() < obstacle.top() ||
+      this.top() > obstacle.bottom() ||
+      this.right() - 40 < obstacle.left() ||
+      this.left() + 40 > obstacle.right() 
     );
   }
   crashWithFood(food) {
     return !(
-      this.bottom() < food.top() -25 ||
-      this.top() > food.bottom() -25 ||
-      this.right() < food.left() -25 ||
-      this.left() > food.right() -25
+      this.bottom() < food.top() ||
+      this.top() > food.bottom() ||
+      this.right() - 40 < food.left() ||
+      this.left() + 40 > food.right() 
     );
   }
 }
 
+//__________________________________________SOUND_________________________________________________________________________//
+
+function sound(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+    this.sound.play();
+  }
+  this.stop = function(){
+    this.sound.pause();
+  }
+}
 //________________________________________MOVING_________________________________________________________________________//
 
 document.onkeydown = function (e) {
