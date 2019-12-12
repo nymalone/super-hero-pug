@@ -448,12 +448,11 @@ function checkGameOver() {
 //________________________________________VICTORY_________________________________________________________________________//
 
 function checkVictory() {
- if (checkGainPoints() === 20) {
-  console.log('dentro do if')
+ if (checkGainPoints() === 1000) {
+  myGameArea.stop();
   myGameArea.ctx.fillStyle = "black",
   myGameArea.ctx.font = "120px sans-serif",
   myGameArea.ctx.textAlign = "center",
   myGameArea.ctx.fillText("YOU WIN!!!", myGameArea.canvas.width / 2, myGameArea.canvas.height / 2)
  }
- console.log('lalalala')
 }
