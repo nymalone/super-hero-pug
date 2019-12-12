@@ -7,7 +7,6 @@ myGameArea.start();
 updateCanvas();
 }
 
-
 //_____________________________________GAME AREA_________________________________________________________________________//
 
 let bg = new Image();
@@ -139,9 +138,11 @@ function updateCanvas() {
   checkGainPoints();
   myGameArea.updateLife();
   id = requestAnimationFrame(updateCanvas);
+  checkVictory();
   myMusic.play();
   checkGameOver();
 }
+
 myMusic = new sound("bg-sound3.mp3");
 
 // start calling updateCanvas once the image is loaded
@@ -298,7 +299,6 @@ document.onkeyup = function (e) {
 };
 
 const player = new Component(253, 153, "hero.png", 0, 330, "image");
-console.log(player);
 
 //_____________________________________OBSTACLES_________________________________________________________________________//
 
@@ -416,7 +416,7 @@ function checkGainPoints() {
     });
     myGameArea.score(points);
   }
-  console.log(points);
+  return points;
 }
 //_____________________________________GAME OVER_________________________________________________________________________//
 
@@ -443,7 +443,17 @@ function checkGameOver() {
     });
     myGameArea.updateLife(life);
   }
-  console.log(life);
 }
 
 //________________________________________VICTORY_________________________________________________________________________//
+
+function checkVictory() {
+ if (checkGainPoints() === 20) {
+  console.log('dentro do if')
+  myGameArea.ctx.fillStyle = "black",
+  myGameArea.ctx.font = "120px sans-serif",
+  myGameArea.ctx.textAlign = "center",
+  myGameArea.ctx.fillText("YOU WIN!!!", myGameArea.canvas.width / 2, myGameArea.canvas.height / 2)
+ }
+ console.log('lalalala')
+}
