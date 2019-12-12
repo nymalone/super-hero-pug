@@ -8,7 +8,7 @@ There you will see the instructions for play and have some fun! :blush:
 
 :exclamation:For better experience run this game in a browser on you nootebook or desktop PC. Unfortunatelly this game is not compatible with mobile.
 
-## How to play
+## How to Play
 Press the **PLAY** button and then your adventure will start. :arrow_forward:
 
 You will start the game with only **3** lives. Be careful! 
