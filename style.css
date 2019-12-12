@@ -4,6 +4,9 @@ body {
   background-color: #C2B49A;
 }
 
+#myCover {
+  display: flex;
+}
 .logo {
   display: flex;
 }
@@ -16,7 +19,7 @@ body {
 .how-to-play h1 {
   color: #D7392E;
   font-family: 'Lakki Reddy', cursive;
-  font-size: 75px;
+  font-size: 80px;
   text-align: center;
 }
 
@@ -28,7 +31,7 @@ body {
 }
 
 .how-to-play a {
-  margin-left: 150px;
+  margin-left: 210px;
 }
 .button {
   display: inline-block;

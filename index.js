@@ -1,9 +1,19 @@
+//_____________________________________PLAY BUTTON_________________________________________________________________________//
+
+let playButton = document.getElementById("playButton");
+playButton.onclick = () => {
+document.getElementById("myCover").style.display = "none";
+myGameArea.start();
+updateCanvas();
+}
+
+
 //_____________________________________GAME AREA_________________________________________________________________________//
 
 let bg = new Image();
 bg.src = "vector-bg.png";
 
-var myMusic;
+let myMusic;
 
 let obs1 = new Image();
 obs1.src = "./images/bomb.png";
@@ -37,7 +47,6 @@ let pause = false;
 let myGameArea = {
   canvas: document.createElement("canvas"),
   frames: 0,
-  //id: requestAnimationFrame(updateCanvas), ///// aqui - depois disso ficou mais rapido/////
   start: function () {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
@@ -115,9 +124,9 @@ let backgroundImage = {
 };
 
 //__________________________________________MOTOR_________________________________________________________________________//
+  
 
-//function updateCanvas() {
-  myGameArea.start();
+function updateCanvas() {
   backgroundImage.move();
   myGameArea.clear();
   backgroundImage.draw();
@@ -290,7 +299,6 @@ document.onkeyup = function (e) {
 
 const player = new Component(253, 153, "hero.png", 0, 330, "image");
 console.log(player);
-//myGameArea.start();
 
 //_____________________________________OBSTACLES_________________________________________________________________________//
 
@@ -418,7 +426,6 @@ function checkGameOver() {
   });
   if (crashed && life === 1) {
     myGameArea.stop();
-    //myMusic.stop();
     myGameArea.ctx.fillStyle = "black",
     myGameArea.ctx.font = "47px sans-serif",
     myGameArea.ctx.textAlign = "center",
@@ -438,3 +445,5 @@ function checkGameOver() {
   }
   console.log(life);
 }
+
+//________________________________________VICTORY_________________________________________________________________________//
