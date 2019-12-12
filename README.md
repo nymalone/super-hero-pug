@@ -8,6 +8,8 @@ There you will see the instructions for playing and have some fun! :blush:
 
 :exclamation:For better experience, run this game in a browser on you nootebook or desktop PC. Unfortunatelly this game is not compatible with mobile.
 
+![Screen Shot 2019-12-12 at 12 34 53](https://user-images.githubusercontent.com/54912285/70733185-94a43000-1ce8-11ea-8eee-63685b5e6418.png)
+
 ## How to Play
 Press *PLAY* and then your adventure will start. :arrow_forward:
 
