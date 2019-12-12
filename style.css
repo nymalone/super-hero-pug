@@ -1,6 +1,74 @@
 body {
   display: flex;
   justify-content: center;
-  overflow: hidden;
-  background-color: #84E9FB;
+  background-color: #C2B49A;
 }
+
+.logo {
+  display: flex;
+}
+
+.logo__img {
+  width: 500px;
+  height: 778px;
+}
+
+.how-to-play h1 {
+  color: #D7392E;
+  font-family: 'Lakki Reddy', cursive;
+  font-size: 75px;
+  text-align: center;
+}
+
+.how-to-play p {
+  font-family: 'Righteous', cursive;
+  text-align: center;
+  font-size: 21px;
+  line-height: 1.5;
+}
+
+.how-to-play a {
+  margin-left: 150px;
+}
+.button {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  padding: 11px 33px;
+  border: 0px solid #d73a2e;
+  border-radius: 8px;
+  background: #d73a2e;
+  background: -webkit-gradient(linear, left top, left bottom, from(#d73a2e), to(#d73a2e));
+  background: -moz-linear-gradient(top, #d73a2e, #d73a2e);
+  background: linear-gradient(to bottom, #d73a2e, #d73a2e);
+  -webkit-box-shadow: #ff5959 0px 0px 23px 0px;
+  -moz-box-shadow: #ff5959 0px 0px 23px 0px;
+  box-shadow: #ff5959 0px 0px 23px 0px;
+  text-shadow: #450401 1px 1px 1px;
+  font: normal normal bold 32px arial;
+  color: #ffffff;
+  text-decoration: none;
+}
+.button:hover,
+.button:focus {
+  border: 0px solid #ff4b3c;
+  background: #ff4637;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ff4637), to(#ff4637));
+  background: -moz-linear-gradient(top, #ff4637, #ff4637);
+  background: linear-gradient(to bottom, #ff4637, #ff4637);
+  color: #ffffff;
+  text-decoration: none;
+}
+.button:active {
+  background: #81231c;
+  background: -webkit-gradient(linear, left top, left bottom, from(#81231c), to(#d73a2e));
+  background: -moz-linear-gradient(top, #81231c, #d73a2e);
+  background: linear-gradient(to bottom, #81231c, #d73a2e);
+}
+
+
+
+/* font-family: 'Lilita One', cursive;
+font-family: 'Lakki Reddy', cursive;
+font-family: 'Righteous', cursive;
+font-family: 'Mansalva', cursive; */

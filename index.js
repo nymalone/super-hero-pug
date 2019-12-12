@@ -116,7 +116,8 @@ let backgroundImage = {
 
 //__________________________________________MOTOR_________________________________________________________________________//
 
-function updateCanvas() {
+//function updateCanvas() {
+  myGameArea.start();
   backgroundImage.move();
   myGameArea.clear();
   backgroundImage.draw();
@@ -289,7 +290,7 @@ document.onkeyup = function (e) {
 
 const player = new Component(253, 153, "hero.png", 0, 330, "image");
 console.log(player);
-myGameArea.start();
+//myGameArea.start();
 
 //_____________________________________OBSTACLES_________________________________________________________________________//
 
@@ -417,6 +418,7 @@ function checkGameOver() {
   });
   if (crashed && life === 1) {
     myGameArea.stop();
+    //myMusic.stop();
     myGameArea.ctx.fillStyle = "black",
     myGameArea.ctx.font = "47px sans-serif",
     myGameArea.ctx.textAlign = "center",
