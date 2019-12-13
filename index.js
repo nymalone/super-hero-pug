@@ -12,6 +12,7 @@ updateCanvas();
 let bg = new Image();
 bg.src = "vector-bg.png";
 
+
 let myMusic;
 
 let obs1 = new Image();
@@ -87,7 +88,7 @@ let backgroundImage = {
     this.x += this.speed;
     this.x %= myGameArea.canvas.width;
     if (points >= 100) {
-      this.x += this.speed + 1; //ARRUMAR!!
+      this.x += this.speed + 1; 
     } else if (points > 100 && points <= 200) {
       this.x += this.speed + 1.5;
     } else if (points > 200 && points <= 400) {
@@ -100,7 +101,7 @@ let backgroundImage = {
       this.x,
       0,
       myGameArea.canvas.width,
-      myGameArea.canvas.height
+      myGameArea.canvas.height 
     );
     if (this.speed < 0) {
       this.ctx.drawImage(
@@ -108,7 +109,7 @@ let backgroundImage = {
         this.x + myGameArea.canvas.width,
         0,
         myGameArea.canvas.width,
-        myGameArea.canvas.height
+        myGameArea.canvas.height 
       );
     } else {
       this.ctx.drawImage(
@@ -116,7 +117,7 @@ let backgroundImage = {
         this.x - this.img.width,
         0,
         myGameArea.canvas.width,
-        myGameArea.canvas.height
+        myGameArea.canvas.height 
       );
     }
   }
